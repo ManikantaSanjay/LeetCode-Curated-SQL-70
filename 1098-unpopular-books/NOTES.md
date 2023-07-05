@@ -1,0 +1,1 @@
+* Left Join is used, because there are cases when the book has zero sales; If we use inner join then that particular book with zero sales is excluded when we join it with the Orders table.
