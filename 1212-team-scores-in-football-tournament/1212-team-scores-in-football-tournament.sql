@@ -18,5 +18,5 @@ FROM (
   END AS num_points
   FROM Teams t LEFT JOIN Matches m ON t.team_id = m.guest_team
 ) as all_matches
-GROUP BY team_id, team_name
+GROUP BY team_id
 ORDER BY num_points DESC, team_id ASC;
