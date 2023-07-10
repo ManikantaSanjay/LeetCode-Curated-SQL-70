@@ -4,4 +4,5 @@
 ​
 * Final SELECT Statement: This statement retrieves the transaction count from the seq CTE and calculates the number of visits for each transaction count by joining the seq and trans_count CTEs on transactions_count. It uses the COALESCE function to replace NULL with 0 in case there are transaction counts in the seq CTE that do not exist in trans_count. This could happen if, for example, no user had a certain number of transactions in a visit. The GROUP BY clause groups the results by transactions_count, and the ORDER BY clause orders the result set by transactions_count in ascending order.
 ​
+
 This query helps to determine how many visits had each possible number of transactions. For example, you can find out how many visits had no transactions, how many had 1 transaction, how many had 2 transactions, and so on, up to the maximum number of transactions recorded in a single visit.
