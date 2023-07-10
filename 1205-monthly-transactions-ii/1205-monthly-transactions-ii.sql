@@ -20,7 +20,7 @@ WITH cte AS (
         DATE_FORMAT(c.trans_date, '%Y-%m') AS month
     FROM
         Chargebacks c
-    LEFT JOIN
+    JOIN
         Transactions t ON c.trans_id = t.id
 )
 
