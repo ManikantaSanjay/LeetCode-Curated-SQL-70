@@ -11,3 +11,6 @@ Contributions to this repository are welcome! If you have a new SQL question, an
 
 ## Acknowledgments
 This repository is inspired by the LeetCode platform and its curated collection of SQL questions. Special thanks to LeetCode for providing an excellent platform for practicing coding skills.
+
+## License
+The content of this repository is licensed under the MIT License. Feel free to use, distribute, and modify the code for personal or commercial purposes.
