@@ -7,5 +7,4 @@ FROM (
 WHERE rn = 2 OR (rn = 1 AND NOT EXISTS (
     SELECT 1 FROM UserActivity
     WHERE username = tmp.username AND endDate < tmp.endDate))
-    
-ORDER BY username, rn DESC;
+;
