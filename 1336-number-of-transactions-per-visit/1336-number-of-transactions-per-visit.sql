@@ -17,6 +17,7 @@ trans_count AS (
     ON V.user_id = T.user_id AND V.visit_date = T.transaction_date
     GROUP BY V.user_id, V.visit_date
 )
+
 SELECT seq.transactions_count, COALESCE(COUNT(trans_count.user_id), 0) AS visits_count
 FROM seq
 LEFT JOIN trans_count ON seq.transactions_count = trans_count.transactions_count
