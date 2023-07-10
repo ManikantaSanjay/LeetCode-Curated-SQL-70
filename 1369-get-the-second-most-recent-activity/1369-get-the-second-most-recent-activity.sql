@@ -1,7 +1,7 @@
 SELECT username, activity, startDate, endDate
 FROM (
   SELECT username, activity, startDate, endDate,
-    ROW_NUMBER() OVER (PARTITION BY username ORDER BY endDate DESC) AS rn
+    RANK() OVER (PARTITION BY username ORDER BY endDate DESC) AS rn
   FROM UserActivity
 ) tmp
 WHERE rn = 2 OR (rn = 1 AND NOT EXISTS (
