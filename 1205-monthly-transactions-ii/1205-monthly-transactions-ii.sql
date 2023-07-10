@@ -1,70 +1,38 @@
-# Write your MySQL query statement below
-WITH Approved AS (
+WITH cte AS (
     SELECT 
-        DATE_FORMAT(trans_date, '%Y-%m') AS month,
+        id,
         country,
-        COUNT(*) AS approved_count,
-        SUM(amount) AS approved_amount
-    FROM 
+        state,
+        amount,
+        DATE_FORMAT(trans_date, '%Y-%m') AS month
+    FROM
         Transactions
-    WHERE 
+    WHERE
         state = 'approved'
-    GROUP BY 
-        month,
-        country
-),
-Chargebacks AS (
-    SELECT 
-        DATE_FORMAT(c.trans_date, '%Y-%m') AS month,
-        t.country,
-        COUNT(*) AS chargeback_count,
-        SUM(t.amount) AS chargeback_amount
-    FROM 
-        Chargebacks c
-    JOIN 
-        Transactions t ON c.trans_id = t.id
-    GROUP BY 
-        month,
-        country
-),
-AllData AS (
-    SELECT 
-        month,
-        country,
-        approved_count,
-        approved_amount,
-        0 AS chargeback_count,
-        0 AS chargeback_amount
-    FROM 
-        Approved
+
     UNION ALL
+
     SELECT 
-        month,
+        trans_id AS id,
         country,
-        0 AS approved_count,
-        0 AS approved_amount,
-        chargeback_count,
-        chargeback_amount
-    FROM 
-        Chargebacks
+        'chargeback' AS state,
+        amount,
+        DATE_FORMAT(c.trans_date, '%Y-%m') AS month
+    FROM
+        Chargebacks c
+    LEFT JOIN
+        Transactions t ON c.trans_id = t.id
 )
 
-SELECT 
+SELECT
     month,
     country,
-    SUM(approved_count) AS approved_count,
-    SUM(approved_amount) AS approved_amount,
-    SUM(chargeback_count) AS chargeback_count,
-    SUM(chargeback_amount) AS chargeback_amount
-FROM 
-    AllData
-GROUP BY 
+    SUM(IF(state = 'approved', 1, 0)) AS approved_count,
+    SUM(IF(state = 'approved', amount, 0)) AS approved_amount,
+    SUM(IF(state = 'chargeback', 1, 0)) AS chargeback_count,
+    SUM(IF(state = 'chargeback', amount, 0)) AS chargeback_amount
+FROM
+    cte
+GROUP BY
     month,
-    country
-HAVING 
-    approved_count > 0 
-    OR approved_amount > 0 
-    OR chargeback_count > 0 
-    OR chargeback_amount > 0
-ORDER BY 
-    month;
+    country;
